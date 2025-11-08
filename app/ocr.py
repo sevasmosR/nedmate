@@ -1,8 +1,14 @@
 from azure.ai.formrecognizer import DocumentAnalysisClient
 from azure.core.credentials import AzureKeyCredential
+from dotenv import load_dotenv
+import os
 
-FORM_RECOGNIZER_ENDPOINT = "https://novation.cognitiveservices.azure.com/"
-FORM_RECOGNIZER_KEY = "22YhUPf7tHOIpLOxvSYZ0m6K0bOk8NCOqrrq6wXSCYJ2FShPl7j7JQQJ99BKACYeBjFXJ3w3AAALACOG0A1s"
+load_dotenv()  # Load environment variables from .env
+
+FORM_RECOGNIZER_KEY = os.getenv("FORM_RECOGNIZER_KEY")
+FORM_RECOGNIZER_ENDPOINT = os.getenv("FORM_RECOGNIZER_ENDPOINT")
+
+print("Loaded key:", FORM_RECOGNIZER_KEY is not None)
 
 client = DocumentAnalysisClient(
     endpoint=FORM_RECOGNIZER_ENDPOINT,
