@@ -1,26 +1,16 @@
-# main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routes import business, branch, expense
+from .routes import transactions  # import your new router
 
-app = FastAPI(title="Business Expense Forecast API")
+app = FastAPI(title="NedMate AI API")
 
-# CORS setup
-origins = ["*"]  # Allow all origins (for testing). Replace with your frontend URL in production.
-
+# CORS for frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,       # List of allowed origins
-    allow_credentials=True,      # Allow cookies, authorization headers
-    allow_methods=["*"],         # Allow all HTTP methods
-    allow_headers=["*"],         # Allow all headers
+    allow_origins=["*"],  # replace with your frontend URL in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
 )
 
-# Include route modules
-app.include_router(business.router, prefix="/business", tags=["business"])
-app.include_router(branch.router, prefix="/branch", tags=["branch"])
-app.include_router(expense.router, prefix="/expense", tags=["expense"])
-
-@app.get("/")
-def root():
-    return {"message": "Business Expense Forecast API is running"}
+app.include_router(transactions.router, prefix="/api", tags=["transactions"])

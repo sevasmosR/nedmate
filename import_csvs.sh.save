@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# PostgreSQL connection string
+PG_CONN=host=nedmate-ai-db-001.postgres.database.azure.com dbname=postgres user=nedmateadmin password=SecretP@ssword1 sslmode=require"
+
+# Path to your CSV root folder
+CSV_ROOT="/home/respect/Downloads/Nedbank Hackathon Final"
+
+# Loop through each year folder and CSV file
+for year in 2020 2021 2022 2023 2024 2025; do
+    for csv_file in "$CSV_ROOT/$year/"*.csv; do
+        echo "Importing $csv_file ..."
+        psql "$PG_CONN" -c "\copy transactions(date, account, description, debit_fc, credit_fc, balance_fc, debit_zar, credit_zar, balance_zar, category, reference, currency, fx_to_zar_at_txn, latitude, longitude, counterparty) FROM '$csv_file' DELIMITER ',' CSV HEADER;"
+    done
+done
+
+echo "All CSV files imported!"
